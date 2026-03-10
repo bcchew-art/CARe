@@ -219,17 +219,17 @@ img { max-width: 100%; }
 /* ── ABOUT ── */
 .about-img-wrapper { position: relative; }
 .about-img-main {
-  border-radius: 16px; overflow: hidden;
+  border-radius: 16px;
   box-shadow: 0 20px 60px rgba(0,0,0,0.1);
 }
-.about-img-main img { width: 100%; display: block; object-fit: cover; }
+.about-img-main img { width: 100%; display: block; border-radius: 16px; }
 .about-img-float {
   position: absolute; bottom: -30px; right: -30px;
   width: 220px; border-radius: 14px;
-  overflow: hidden; border: 6px solid var(--white);
+  border: 6px solid var(--white);
   box-shadow: 0 12px 40px rgba(0,0,0,0.12);
 }
-.about-img-float img { width: 100%; display: block; }
+.about-img-float img { width: 100%; display: block; border-radius: 10px; }
 .about-experience {
   position: absolute; top: -20px; left: -20px;
   background: var(--primary);
@@ -296,11 +296,11 @@ img { max-width: 100%; }
   border-color: transparent;
 }
 .service-card-img {
-  height: 220px; overflow: hidden;
+  height: 220px;
   position: relative;
 }
 .service-card-img img {
-  width: 100%; min-height: 100%; object-fit: cover;
+  width: 100%; height: 220px; object-fit: cover; display: block;
   transition: transform 0.5s ease;
 }
 .service-card:hover .service-card-img img { transform: scale(1.08); }
