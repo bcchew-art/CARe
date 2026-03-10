@@ -1,2 +1,2 @@
-# ai4tweens
-AI Agent and Vibe Coding for Tweens
+# CARe
+UI Revamp
