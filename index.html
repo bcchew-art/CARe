@@ -1,439 +1,1153 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="color-scheme: light only;">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Your First AI Agent — OpenClaw Session</title>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Patrick+Hand&display=swap" rel="stylesheet">
-<script type="module" src="https://unpkg.com/wired-elements@3.0.0/lib/wired-elements.bundled.min.js"></script>
+<meta name="color-scheme" content="light only">
+<title>Centre for Advanced Rehabilitation - CARe | Singapore</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --ink: #1a1a2e;
-    --paper: #fdf8f0;
-    --paper2: #fff9f0;
-    --teal: #00897b;
-    --teal-light: #e0f2f1;
-    --blue: #1565c0;
-    --blue-light: #e3f2fd;
-    --red: #c62828;
-    --red-light: #ffebee;
-    --yellow: #f9a825;
-    --yellow-light: #fffde7;
-    --muted: #5d4037;
-    --border: #d7ccc8;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Patrick Hand', cursive;
-    background: var(--paper);
-    color: var(--ink);
-    font-size: 16px;
-    line-height: 1.6;
-    background-image: repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(180,200,220,0.15) 27px, rgba(180,200,220,0.15) 28px);
-  }
+:root {
+  --primary: #1e6e6e;
+  --primary-dark: #155757;
+  --primary-light: #e8f4f4;
+  --secondary: #1a2d50;
+  --accent: #c5a44e;
+  --accent-light: #f8f3e6;
+  --body-text: #4a4a4a;
+  --heading: #1a2d50;
+  --light-bg: #f7f9fb;
+  --border: #e6eaee;
+  --white: #ffffff;
+}
 
-  /* HERO */
-  .hero { background: var(--ink); padding: 36px 24px 30px; text-align: center; position: relative; overflow: hidden; }
-  .hero::before { content: ''; position: absolute; inset: 0; background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.02) 10px, rgba(255,255,255,0.02) 11px); }
-  .hero-robot { display: block; margin: 0 auto 16px; }
-  .hero h1 { font-family: 'Caveat', cursive; font-size: 30px; font-weight: 700; color: #fff; line-height: 1.2; margin-bottom: 6px; }
-  .hero p { color: rgba(255,255,255,0.6); font-size: 15px; margin-bottom: 16px; }
-  .hero-pills { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 8px; }
-  .pill { background: rgba(255,255,255,0.1); border: 1.5px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.9); font-family: 'Patrick Hand', cursive; font-size: 13px; padding: 4px 14px; border-radius: 20px; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 
-  /* CONTENT */
-  .content { max-width: 540px; margin: 0 auto; padding: 20px 16px 48px; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  color: var(--body-text);
+  line-height: 1.7;
+  overflow-x: hidden;
+  background-color: var(--white) !important;
+  color-scheme: light;
+}
 
-  /* INTRO CARD */
-  .intro-card { background: var(--teal-light); border: 2.5px solid var(--teal); border-radius: 4px; padding: 18px 20px; margin-bottom: 28px; }
-  .intro-title { font-family: 'Caveat', cursive; font-size: 20px; font-weight: 700; color: var(--teal); margin-bottom: 8px; }
-  .intro-card p { font-size: 15px; line-height: 1.7; color: #1a3030; }
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'DM Serif Display', serif;
+  color: var(--heading);
+}
 
-  /* SECTION */
-  .section { margin-bottom: 32px; }
-  .section-title { font-family: 'Caveat', cursive; font-size: 22px; font-weight: 700; color: var(--ink); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-  .section-title .icon { font-size: 22px; }
+a { text-decoration: none; transition: all 0.3s ease; }
+img { max-width: 100%; }
 
-  /* WIRED CARD */
-  wired-card { display: block; padding: 16px 18px; background: var(--paper2); }
+/* ── TOP BAR ── */
+.top-bar {
+  background: var(--secondary);
+  padding: 8px 0;
+  font-size: 13px;
+  color: rgba(255,255,255,0.8);
+}
+.top-bar a { color: rgba(255,255,255,0.9); }
+.top-bar a:hover { color: var(--accent); }
+.top-bar .bi { color: var(--accent); margin-right: 6px; }
+.top-divider { margin: 0 16px; opacity: 0.3; }
 
-  /* ROWS */
-  .row { display: flex; gap: 8px; padding: 8px 0; border-bottom: 1.5px dashed var(--border); font-size: 14.5px; align-items: flex-start; }
-  .row:last-child { border-bottom: none; }
-  .row-key { color: var(--muted); width: 90px; flex-shrink: 0; }
-  .row-val { font-weight: 600; color: var(--ink); }
+/* ── NAVBAR ── */
+.navbar {
+  background: var(--white);
+  padding: 0;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+  position: sticky; top: 0; z-index: 1000;
+}
+.navbar-brand img { height: 60px; }
+.navbar .nav-link {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500; font-size: 15px;
+  color: var(--heading); padding: 24px 16px !important;
+  position: relative; letter-spacing: 0.2px;
+}
+.navbar .nav-link::after {
+  content: ''; position: absolute;
+  bottom: 0; left: 16px; right: 16px;
+  height: 3px; background: var(--primary);
+  transform: scaleX(0); transition: transform 0.3s ease;
+  border-radius: 2px 2px 0 0;
+}
+.navbar .nav-link:hover { color: var(--primary); }
+.navbar .nav-link:hover::after { transform: scaleX(1); }
+.navbar .nav-link.active { color: var(--primary); }
+.navbar .nav-link.active::after { transform: scaleX(1); }
+.btn-appointment {
+  background: var(--primary); color: var(--white);
+  font-weight: 600; padding: 12px 28px;
+  border-radius: 6px; font-size: 14px;
+  border: none; letter-spacing: 0.3px;
+  transition: all 0.3s ease;
+}
+.btn-appointment:hover {
+  background: var(--primary-dark); color: var(--white);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(30,110,110,0.3);
+}
 
-  /* VIBE */
-  .vibe-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
-  .vibe-col { padding: 12px; border-radius: 4px; }
-  .vibe-col.vibe-left { background: #f5f5f5; }
-  .vibe-col.vibe-right { background: var(--teal-light); }
-  .vibe-col h4 { font-family: 'Caveat', cursive; font-size: 15px; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; }
-  .vibe-col.vibe-left h4 { color: var(--muted); }
-  .vibe-col.vibe-right h4 { color: var(--teal); }
-  .vibe-col ul { list-style: none; }
-  .vibe-col ul li { font-size: 13px; padding: 4px 0; border-bottom: 1px dashed var(--border); display: flex; gap: 6px; }
-  .vibe-col ul li:last-child { border-bottom: none; }
-  .key-msg { background: var(--teal-light); border-left: 4px solid var(--teal); padding: 12px 14px; font-size: 14px; color: #1a3030; line-height: 1.65; border-radius: 0 4px 4px 0; }
+/* ── HERO ── */
+.hero {
+  position: relative;
+  min-height: 92vh;
+  display: flex; align-items: center;
+  overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0; z-index: 0;
+}
+.hero-bg img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+.hero-bg::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(105deg,
+    rgba(26,45,80,0.92) 0%,
+    rgba(26,45,80,0.75) 45%,
+    rgba(30,110,110,0.4) 100%
+  );
+}
+.hero-content {
+  position: relative; z-index: 2;
+  padding: 80px 0;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 8px 20px; border-radius: 50px;
+  font-size: 13px; color: var(--accent);
+  font-weight: 600; letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  backdrop-filter: blur(6px);
+}
+.hero h1 {
+  font-size: clamp(40px, 5.5vw, 64px);
+  color: var(--white); line-height: 1.15;
+  margin-bottom: 12px;
+}
+.hero h1 span { color: var(--accent); }
+.hero-tagline {
+  font-size: 16px; letter-spacing: 5px;
+  text-transform: uppercase; color: rgba(255,255,255,0.7);
+  font-weight: 400; margin-bottom: 24px;
+}
+.hero-desc {
+  font-size: 17px; color: rgba(255,255,255,0.85);
+  max-width: 520px; line-height: 1.8;
+  margin-bottom: 36px;
+}
+.hero-buttons { display: flex; gap: 14px; flex-wrap: wrap; }
+.btn-hero-primary {
+  background: var(--primary); color: var(--white);
+  padding: 15px 34px; border-radius: 6px;
+  font-weight: 600; font-size: 15px;
+  display: inline-flex; align-items: center; gap: 10px;
+  box-shadow: 0 4px 20px rgba(30,110,110,0.4);
+  border: 2px solid var(--primary);
+}
+.btn-hero-primary:hover {
+  background: var(--primary-dark); color: var(--white);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(30,110,110,0.5);
+}
+.btn-hero-outline {
+  background: transparent; color: var(--white);
+  padding: 15px 34px; border-radius: 6px;
+  font-weight: 600; font-size: 15px;
+  border: 2px solid rgba(255,255,255,0.35);
+  display: inline-flex; align-items: center; gap: 10px;
+}
+.btn-hero-outline:hover {
+  background: rgba(255,255,255,0.1);
+  color: var(--white); border-color: rgba(255,255,255,0.6);
+}
 
-  /* TIMELINE */
-  .tl-block-title { font-family: 'Caveat', cursive; font-size: 16px; font-weight: 700; color: var(--blue); text-transform: uppercase; margin: 12px 0 6px; }
-  .tl-item { display: flex; gap: 12px; padding: 9px 0; border-bottom: 1.5px dashed var(--border); font-size: 14px; align-items: flex-start; }
-  .tl-item:last-child { border-bottom: none; }
-  .tl-badge { background: var(--blue-light); color: var(--blue); font-family: 'Caveat', cursive; font-size: 13px; font-weight: 700; padding: 2px 8px; border-radius: 4px; white-space: nowrap; flex-shrink: 0; margin-top: 1px; }
-  .tl-label { flex: 1; font-weight: 600; }
-  .tl-sub { font-size: 12.5px; color: var(--muted); display: block; margin-top: 2px; font-weight: 400; }
-  .lunch { text-align: center; padding: 10px; font-family: 'Caveat', cursive; font-size: 18px; font-weight: 700; background: var(--yellow-light); border: 2px dashed var(--yellow); border-radius: 4px; margin: 10px 0; color: #5d4000; }
+.hero-info-bar {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  z-index: 3; background: var(--white);
+  box-shadow: 0 -4px 30px rgba(0,0,0,0.08);
+}
+.info-item {
+  display: flex; align-items: center; gap: 16px;
+  padding: 28px 24px;
+  border-right: 1px solid var(--border);
+}
+.info-item:last-child { border-right: none; }
+.info-icon {
+  width: 52px; height: 52px; flex-shrink: 0;
+  background: var(--primary-light);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+}
+.info-icon i { font-size: 22px; color: var(--primary); }
+.info-item h6 { font-family: 'DM Sans', sans-serif; font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--primary); font-weight: 600; margin-bottom: 2px; }
+.info-item p { margin: 0; font-size: 14px; color: var(--body-text); font-weight: 500; }
 
-  /* LEARN */
-  .learn-tag { display: inline-block; font-family: 'Caveat', cursive; font-size: 13px; font-weight: 700; padding: 2px 10px; border-radius: 4px; margin-bottom: 8px; text-transform: uppercase; }
-  .learn-tag.core { background: var(--blue-light); color: var(--blue); }
-  .learn-tag.bonus { background: var(--teal-light); color: var(--teal); }
-  .learn-list { list-style: none; margin-bottom: 12px; }
-  .learn-list li { display: flex; gap: 10px; align-items: flex-start; padding: 6px 0; font-size: 14px; border-bottom: 1px dashed var(--border); }
-  .learn-list li:last-child { border-bottom: none; }
-  .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
-  .dot.core { background: var(--blue); }
-  .dot.bonus { background: var(--teal); }
+/* ── SECTION STYLES ── */
+.section-padding { padding: 100px 0; }
+.section-sm-padding { padding: 80px 0; }
+.section-label {
+  font-size: 13px; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--primary);
+  font-weight: 600; margin-bottom: 10px;
+  display: inline-flex; align-items: center; gap: 10px;
+}
+.section-label::before {
+  content: ''; width: 30px; height: 2px;
+  background: var(--primary); display: inline-block;
+}
+.section-title {
+  font-size: clamp(30px, 3.5vw, 44px);
+  margin-bottom: 18px; line-height: 1.2;
+}
+.section-title span { color: var(--primary); }
+.section-desc {
+  font-size: 16px; color: var(--body-text);
+  max-width: 600px; line-height: 1.8;
+}
 
-  /* STAGES */
-  .stage-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
-  .stage { padding: 14px; border-radius: 4px; border: 2px solid; }
-  .stage.active { border-color: var(--teal); background: var(--teal-light); }
-  .stage.later { border-color: var(--border); background: #fafafa; }
-  .stage-label { font-family: 'Caveat', cursive; font-size: 13px; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; }
-  .stage.active .stage-label { color: var(--teal); }
-  .stage.later .stage-label { color: var(--muted); }
-  .stage-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
-  .stage-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+/* ── ABOUT ── */
+.about-img-wrapper { position: relative; }
+.about-img-main {
+  border-radius: 16px; overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+}
+.about-img-main img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.about-img-float {
+  position: absolute; bottom: -30px; right: -30px;
+  width: 220px; border-radius: 14px;
+  overflow: hidden; border: 6px solid var(--white);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+}
+.about-img-float img { width: 100%; display: block; }
+.about-experience {
+  position: absolute; top: -20px; left: -20px;
+  background: var(--primary);
+  color: var(--white); padding: 20px 24px;
+  border-radius: 12px; text-align: center;
+  box-shadow: 0 8px 30px rgba(30,110,110,0.35);
+}
+.about-experience .num { font-size: 36px; font-weight: 700; line-height: 1; }
+.about-experience .txt { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
 
-  /* COST */
-  .cost-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding: 9px 0; border-bottom: 1.5px dashed var(--border); font-size: 14px; }
-  .cost-row:last-of-type { border-bottom: none; }
-  .cost-name { flex: 1; }
-  .cost-name span { display: block; font-size: 12px; color: var(--muted); margin-top: 1px; }
-  .cost-price { font-family: 'Caveat', cursive; font-size: 17px; font-weight: 700; color: var(--teal); white-space: nowrap; }
-  .cost-total { display: flex; justify-content: space-between; align-items: center; background: var(--teal-light); border: 2px solid var(--teal); border-radius: 4px; padding: 10px 14px; margin-top: 10px; font-size: 15px; font-weight: 600; }
-  .cost-total .cost-price { font-size: 20px; }
+.about-features { margin-top: 32px; }
+.about-feature-item {
+  display: flex; gap: 14px; margin-bottom: 20px;
+}
+.about-feature-icon {
+  width: 44px; height: 44px; flex-shrink: 0;
+  background: var(--primary-light);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+}
+.about-feature-icon i { color: var(--primary); font-size: 20px; }
+.about-feature-item h6 {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600; font-size: 15px;
+  margin-bottom: 2px;
+}
+.about-feature-item p { font-size: 14px; margin: 0; color: var(--body-text); }
 
-  /* ALERTS */
-  .alert { background: var(--yellow-light); border-left: 4px solid var(--yellow); padding: 12px 14px; font-size: 13.5px; color: #5d4000; border-radius: 0 4px 4px 0; margin-top: 12px; line-height: 1.6; }
-  .danger { background: var(--red-light); border-left: 4px solid var(--red); padding: 12px 14px; font-size: 13.5px; color: #7f0000; border-radius: 0 4px 4px 0; margin-top: 10px; line-height: 1.6; }
+/* ── COUNTERS ── */
+.counter-section {
+  background: var(--primary);
+  padding: 60px 0;
+  position: relative;
+  overflow: hidden;
+}
+.counter-section::before {
+  content: ''; position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 20h20v20H20z' fill='%23ffffff' fill-opacity='0.04'/%3E%3C/svg%3E");
+}
+.counter-item { text-align: center; position: relative; z-index: 1; }
+.counter-item .num {
+  font-size: 48px; font-weight: 700;
+  color: var(--white); line-height: 1;
+  font-family: 'DM Sans', sans-serif;
+}
+.counter-item .label {
+  font-size: 14px; color: rgba(255,255,255,0.75);
+  margin-top: 8px; letter-spacing: 0.5px;
+}
 
-  /* TIPS */
-  .tip-grid { display: flex; flex-direction: column; gap: 8px; }
-  .tip { display: flex; gap: 12px; align-items: flex-start; background: #f5f5f5; border-radius: 4px; padding: 10px 14px; font-size: 14px; }
-  .tip .tip-icon { font-size: 18px; flex-shrink: 0; }
+/* ── SERVICES ── */
+.service-card {
+  background: var(--white);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+  transition: all 0.4s ease;
+  border: 1px solid var(--border);
+  height: 100%;
+}
+.service-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+  border-color: transparent;
+}
+.service-card-img {
+  height: 220px; overflow: hidden;
+  position: relative;
+}
+.service-card-img img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.service-card:hover .service-card-img img { transform: scale(1.08); }
+.service-card-img .tag {
+  position: absolute; top: 16px; left: 16px;
+  background: var(--primary); color: var(--white);
+  font-size: 12px; font-weight: 600;
+  padding: 4px 14px; border-radius: 50px;
+  letter-spacing: 0.5px;
+}
+.service-card-body { padding: 28px; }
+.service-card-body h5 {
+  font-size: 22px; margin-bottom: 12px;
+}
+.service-card-body p {
+  font-size: 14px; color: var(--body-text); line-height: 1.7;
+  margin-bottom: 16px;
+}
+.service-link {
+  font-size: 14px; font-weight: 600;
+  color: var(--primary);
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.service-link:hover { color: var(--primary-dark); gap: 10px; }
 
-  /* PARENT */
-  .parent-block { margin-bottom: 14px; }
-  .parent-block-title { font-family: 'Caveat', cursive; font-size: 14px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
-  .check-list { list-style: none; }
-  .check-list li { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; padding: 5px 0; border-bottom: 1px dashed var(--border); }
-  .check-list li:last-child { border-bottom: none; }
-  .chk { color: var(--teal); flex-shrink: 0; }
-  .divider { height: 1px; background: var(--border); margin: 14px 0; }
+/* ── AWARD / CTA BANNER ── */
+.cta-banner {
+  background: linear-gradient(135deg, var(--secondary) 0%, #2a4272 100%);
+  padding: 80px 0;
+  position: relative; overflow: hidden;
+}
+.cta-banner::before {
+  content: ''; position: absolute;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(197,164,78,0.15), transparent);
+  top: -100px; right: -100px;
+  border-radius: 50%;
+}
+.cta-badge {
+  width: 140px; height: 140px;
+  background: linear-gradient(135deg, var(--accent), #d4b65e);
+  border-radius: 50%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; flex-shrink: 0;
+  box-shadow: 0 8px 30px rgba(197,164,78,0.4);
+  padding: 12px;
+}
+.cta-badge .icon { font-size: 30px; }
+.cta-badge .year {
+  font-size: 11px; font-weight: 700;
+  color: var(--secondary);
+  letter-spacing: 1.5px; margin-top: 2px;
+}
+.cta-badge .name {
+  font-size: 12px; font-weight: 700;
+  color: var(--secondary); line-height: 1.3;
+  margin-top: 2px;
+}
 
-  /* PREP BOX */
-  .prep-box { border: 2.5px solid var(--teal); border-radius: 4px; padding: 16px; background: var(--teal-light); }
-  .prep-title { font-family: 'Caveat', cursive; font-size: 15px; font-weight: 700; color: var(--teal); text-transform: uppercase; margin-bottom: 10px; }
+/* ── INSURANCE ── */
+.insurance-logo {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex; align-items: center; justify-content: center;
+  min-height: 90px;
+  transition: all 0.3s ease;
+}
+.insurance-logo:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  transform: translateY(-3px);
+  border-color: var(--primary);
+}
+.insurance-logo img { max-height: 55px; max-width: 100%; object-fit: contain; }
 
-  /* LINKS */
-  .link-list { list-style: none; }
-  .link-list li { font-size: 14px; padding: 5px 0; border-bottom: 1px dashed var(--border); display: flex; gap: 8px; align-items: center; }
-  .link-list li:last-child { border-bottom: none; }
-  .link-list a { color: var(--teal); text-decoration: none; font-weight: 600; }
+/* ── FAQ ── */
+.faq-section { background: var(--light-bg); }
+.accordion-item {
+  border: 1px solid var(--border);
+  border-radius: 12px !important;
+  margin-bottom: 12px;
+  overflow: hidden;
+  background: var(--white);
+}
+.accordion-button {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600; font-size: 16px;
+  color: var(--heading); padding: 20px 24px;
+  background: var(--white);
+  box-shadow: none !important;
+}
+.accordion-button:not(.collapsed) {
+  background: var(--primary-light);
+  color: var(--primary);
+}
+.accordion-button::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%231e6e6e' viewBox='0 0 16 16'%3E%3Cpath d='M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z'/%3E%3C/svg%3E");
+  width: 20px; height: 20px;
+  background-size: 20px;
+}
+.accordion-button:not(.collapsed)::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%231e6e6e' viewBox='0 0 16 16'%3E%3Cpath d='M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z'/%3E%3C/svg%3E");
+  transform: none;
+}
+.accordion-body { padding: 0 24px 20px; font-size: 15px; color: var(--body-text); }
 
-  /* TOOLTIP */
-  .tip-word { border-bottom: 2px dashed var(--teal); cursor: pointer; display: inline-block; color: inherit; white-space: nowrap; }
-  .tip-word::after { content: attr(data-tip); position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--ink); color: #fff; font-size: 14px; line-height: 1.6; padding: 12px 16px; border-radius: 8px; white-space: normal; width: 270px; text-align: left; pointer-events: none; opacity: 0; transition: opacity 0.2s; z-index: 1000; box-shadow: 4px 4px 0 rgba(0,0,0,0.3); border: 2px solid var(--teal); }
-  .tip-word:hover::after, .tip-word.active::after { opacity: 1; }
+/* ── HOURS ── */
+.hours-card {
+  background: var(--secondary);
+  border-radius: 16px; padding: 40px;
+  color: var(--white);
+  box-shadow: 0 16px 50px rgba(26,45,80,0.2);
+}
+.hours-card h4 { color: var(--white); margin-bottom: 24px; }
+.hours-row {
+  display: flex; justify-content: space-between;
+  padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.1);
+  font-size: 15px;
+}
+.hours-row:last-child { border-bottom: none; }
+.hours-note {
+  margin-top: 20px; padding: 14px 16px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 10px; font-size: 14px;
+  border-left: 3px solid var(--accent);
+  opacity: 0.9;
+}
 
-  /* FOOTER */
-  .footer { background: var(--ink); color: rgba(255,255,255,0.5); text-align: center; padding: 20px 24px; font-size: 12.5px; line-height: 1.8; }
-  .footer a { color: #4db6ac; text-decoration: none; }
-  .footer strong { color: rgba(255,255,255,0.8); }
+/* ── LOCATION CARDS ── */
+.location-card {
+  background: var(--white);
+  border-radius: 14px;
+  padding: 30px;
+  border: 1px solid var(--border);
+  transition: all 0.3s ease;
+  height: 100%;
+}
+.location-card:hover {
+  box-shadow: 0 12px 36px rgba(0,0,0,0.08);
+  border-color: var(--primary);
+}
+.location-icon {
+  width: 56px; height: 56px;
+  background: var(--primary-light);
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 20px;
+}
+.location-icon i { font-size: 24px; color: var(--primary); }
+.location-card h5 { font-size: 20px; margin-bottom: 12px; }
+.location-card p { font-size: 14px; color: var(--body-text); margin-bottom: 4px; }
+.location-card .phone-link {
+  display: inline-flex; align-items: center; gap: 8px;
+  color: var(--primary); font-weight: 600;
+  margin-top: 10px; font-size: 15px;
+}
+.location-card .phone-link:hover { color: var(--primary-dark); }
 
-  wired-divider { margin: 14px 0; display: block; }
+/* ── CONTACT FORM ── */
+.contact-form { background: var(--light-bg); }
+.form-card {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 48px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.06);
+}
+.form-floating > .form-control {
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  padding: 1rem 1rem;
+  height: calc(3.5rem + 4px);
+}
+.form-floating > textarea.form-control { height: auto; min-height: 130px; }
+.form-floating > .form-control:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(30,110,110,0.1);
+}
+.form-floating > label { font-size: 14px; color: var(--body-text); padding: 1rem; }
+.btn-submit {
+  background: var(--primary); color: var(--white);
+  padding: 16px 40px; border: none;
+  border-radius: 8px; font-weight: 600;
+  font-size: 15px; letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  font-family: 'DM Sans', sans-serif;
+}
+.btn-submit:hover {
+  background: var(--primary-dark); color: var(--white);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(30,110,110,0.35);
+}
+
+/* ── FOOTER ── */
+.footer {
+  background: var(--secondary);
+  padding: 72px 0 0;
+  color: rgba(255,255,255,0.75);
+}
+.footer h5 { color: var(--white); font-size: 20px; margin-bottom: 20px; }
+.footer-brand { margin-bottom: 16px; }
+.footer-desc { font-size: 14px; line-height: 1.8; max-width: 300px; }
+.footer-links { list-style: none; padding: 0; }
+.footer-links li { margin-bottom: 10px; }
+.footer-links a {
+  color: rgba(255,255,255,0.7); font-size: 14px;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.footer-links a:hover { color: var(--accent); }
+.footer-links a .bi { font-size: 10px; color: var(--accent); }
+.footer-contact-item {
+  display: flex; gap: 14px; margin-bottom: 16px;
+}
+.footer-contact-icon {
+  width: 40px; height: 40px; flex-shrink: 0;
+  background: rgba(255,255,255,0.08);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+}
+.footer-contact-icon i { color: var(--accent); font-size: 16px; }
+.footer-contact-item p { margin: 0; font-size: 14px; }
+.footer-contact-item a { color: rgba(255,255,255,0.8); }
+.footer-contact-item a:hover { color: var(--accent); }
+
+.footer-bottom {
+  margin-top: 48px; padding: 20px 0;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  font-size: 13px;
+}
+
+/* ── ANIMATIONS ── */
+.fade-up {
+  opacity: 0; transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+.delay-1 { transition-delay: 0.1s; }
+.delay-2 { transition-delay: 0.2s; }
+.delay-3 { transition-delay: 0.3s; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 991px) {
+  .navbar .nav-link { padding: 12px 16px !important; }
+  .navbar .nav-link::after { display: none; }
+  .hero { min-height: 80vh; }
+  .hero-info-bar { position: relative; }
+  .info-item { border-right: none; border-bottom: 1px solid var(--border); }
+  .about-img-float { display: none; }
+  .about-experience { position: relative; top: auto; left: auto; display: inline-block; margin-bottom: 24px; }
+  .section-padding { padding: 72px 0; }
+}
+@media (max-width: 575px) {
+  .hero h1 { font-size: 32px; }
+  .form-card { padding: 28px 20px; }
+  .hours-card { padding: 28px 20px; }
+}
+
+/* ── CUSTOM LOGO ── */
+.care-logo {
+  display: flex; align-items: center; gap: 10px;
+}
+.care-logo-mark {
+  width: 50px; height: 50px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--white); font-family: 'DM Serif Display', serif;
+  font-size: 14px; font-weight: 700;
+  box-shadow: 0 3px 10px rgba(30,110,110,0.25);
+  line-height: 1;
+  flex-shrink: 0;
+}
+.care-logo-text {
+  font-family: 'DM Serif Display', serif;
+  font-size: 16px; color: var(--heading);
+  line-height: 1.2;
+}
+.care-logo-text small {
+  display: block;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px; color: var(--body-text);
+  letter-spacing: 1.2px; text-transform: uppercase;
+  font-weight: 500; margin-top: 1px;
+}
+.footer .care-logo-text { color: var(--white); }
+.footer .care-logo-text small { color: rgba(255,255,255,0.6); }
+
+/* ── INSURANCE TEXT LOGOS ── */
+.ins-text-logo {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 20px; font-weight: 700;
+  color: var(--heading); letter-spacing: 0.5px;
+  opacity: 0.7; transition: opacity 0.3s;
+}
+.insurance-logo:hover .ins-text-logo { opacity: 1; }
+
+/* ── AWARD STYLED BADGE ── */
+.award-styled {
+  background: linear-gradient(135deg, #f7eed4, #fdf8ed);
+  border: 2px solid var(--accent);
+  border-radius: 16px;
+  padding: 24px 28px;
+  text-align: center;
+  max-width: 200px; margin: 0 auto;
+}
+.award-styled .award-icon { font-size: 36px; margin-bottom: 6px; }
+.award-styled .award-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 14px; color: var(--secondary);
+  font-weight: 700; line-height: 1.3;
+}
+.award-styled .award-org {
+  font-size: 11px; color: var(--accent);
+  font-weight: 600; letter-spacing: 1.5px;
+  text-transform: uppercase; margin-top: 4px;
+}
 </style>
 </head>
 <body>
 
-<div class="hero">
-  <svg class="hero-robot" width="72" height="72" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <line x1="32" y1="6" x2="32" y2="14" stroke="#00bfae" stroke-width="2.5" stroke-linecap="round"/>
-    <circle cx="32" cy="4" r="3" fill="#00bfae"/>
-    <rect x="10" y="14" width="44" height="34" rx="10" fill="#1a2e50"/>
-    <rect x="10" y="14" width="44" height="34" rx="10" stroke="#00bfae" stroke-width="1.5"/>
-    <rect x="18" y="24" width="10" height="10" rx="3" fill="#00bfae"/>
-    <rect x="36" y="24" width="10" height="10" rx="3" fill="#00bfae"/>
-    <circle cx="23" cy="29" r="2.5" fill="#0f2240"/>
-    <circle cx="41" cy="29" r="2.5" fill="#0f2240"/>
-    <circle cx="24" cy="28" r="1" fill="white" opacity="0.7"/>
-    <circle cx="42" cy="28" r="1" fill="white" opacity="0.7"/>
-    <path d="M22 40 Q32 47 42 40" stroke="#00bfae" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-    <rect x="6" y="24" width="5" height="8" rx="2.5" fill="#1a6fff"/>
-    <rect x="53" y="24" width="5" height="8" rx="2.5" fill="#1a6fff"/>
-  </svg>
-  <h1>Your First AI Agent</h1>
-  <p>Vibe Coding for Tweens · Session Handout</p>
-  <div class="hero-pills">
-    <span class="pill">4 Hours + Lunch</span>
-    <span class="pill">Hands-On · 2 Machines</span>
-  </div>
-  <div class="hero-pills">
-    <span class="pill">👧 Lala · 13</span>
-    <span class="pill">👦 Karl · 12</span>
-    <span class="pill">👦 Nat · 12</span>
-    <span class="pill">👧 Rachyl · 11</span>
-  </div>
-</div>
-
-<div class="content">
-
-  <div class="intro-card">
-    <div class="intro-title">👋 What's happening today — in plain English</div>
-    <p>Today you'll meet an AI that lives on a computer and chats through WhatsApp. You'll give it a name, watch it remember things, and then — together — build a brand new ability for it from scratch. By the end of the day, you'll be able to WhatsApp it and challenge it to a game of chess. No coding experience needed. Not for the kids, not for you.</p>
-  </div>
-
-  <div class="section">
-    <div class="section-title"><span class="icon">🤖</span> What is OpenClaw?</div>
-    <wired-card elevation="3">
-      <p style="font-size:14px; color:#4a3728; margin-bottom:14px; line-height:1.7;">A free <span class="tip-word" data-tip="An AI agent can remember you, take actions, and learn new tricks — unlike a regular chatbot that just answers questions.">AI assistant</span> that lives on your own computer and chats through WhatsApp. It remembers your child, can search the web, and can be taught new abilities — called <span class="tip-word" data-tip="Skills are new abilities you teach the agent. Like a chess skill — once installed, it can actually play chess with you.">Skills</span>. Think of it as your child's own personal Jarvis.</p>
-      <div class="row"><span class="row-key">Website</span><span class="row-val">openclaw.ai</span></div>
-      <div class="row"><span class="row-key">Works on</span><span class="row-val">Mac · Windows · Linux</span></div>
-      <div class="row"><span class="row-key">Chat via</span><span class="row-val">WhatsApp · Telegram · Discord</span></div>
-      <div class="row"><span class="row-key">Open source</span><span class="row-val">Yes — free to use</span></div>
-    </wired-card>
-  </div>
-
-  <div class="section">
-    <div class="section-title"><span class="icon">🎮</span> What is Vibe Coding?</div>
-    <wired-card elevation="3">
-      <p style="font-size:14px; color:#4a3728; margin-bottom:12px;">One of the most exciting things your child will learn today:</p>
-      <div class="vibe-grid">
-        <div class="vibe-col vibe-left">
-          <h4>Traditional Coding</h4>
-          <ul>
-            <li><span>📖</span>Learn syntax first</li>
-            <li><span>⏳</span>Years to be productive</li>
-            <li><span>✍️</span>You write every line</li>
-            <li><span>🐛</span>One mistake breaks it</li>
-            <li><span>🚧</span>Barrier: tech knowledge</li>
-          </ul>
-        </div>
-        <div class="vibe-col vibe-right">
-          <h4>Vibe Coding ✨</h4>
-          <ul>
-            <li><span>💬</span>Describe in English</li>
-            <li><span>⚡</span>Productive day one</li>
-            <li><span>🤖</span>AI writes, you direct</li>
-            <li><span>🔁</span>Tell AI what's wrong</li>
-            <li><span>🎯</span>Barrier: clear thinking</li>
-          </ul>
-        </div>
+<!-- TOP BAR -->
+<div class="top-bar d-none d-lg-block">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="d-flex align-items-center">
+        <span><i class="bi bi-geo-alt-fill"></i>Camden Medical Centre &bull; Parkway Centre, Singapore</span>
+        <span class="top-divider">|</span>
+        <a href="/cdn-cgi/l/email-protection#40333530302f32340023252e343225262f3221243632252821226e232f2d"><i class="bi bi-envelope-fill"></i><span class="__cf_email__" data-cfemail="bac9cfcacad5c8cefad9dfd4cec8dfdcd5c8dbdeccc8dfd2dbd894d9d5d7">[email&#160;protected]</span></a>
       </div>
-      <div class="key-msg">💡 <strong>Key idea:</strong> Your child can build real things before learning a single line of code. The skill being taught is <strong>thinking clearly and communicating well</strong> — useful for life, not just tech.</div>
-    </wired-card>
-  </div>
-
-  <div class="section">
-    <div class="section-title"><span class="icon">⏱️</span> Session Timeline</div>
-    <wired-card elevation="3">
-      <div class="tl-block-title">🌅 Block 1 — 2 Hours</div>
-      <div class="tl-item">
-        <span class="tl-badge">0–30 min</span>
-        <span class="tl-label">Concepts &amp; What is OpenClaw<span class="tl-sub">AI agent vs chatbot · how memory works · what it can &amp; can't do</span></span>
-      </div>
-      <div class="tl-item">
-        <span class="tl-badge">30–60 min</span>
-        <span class="tl-label">Responsible Use &amp; How AI Credits Work<span class="tl-sub">Dos &amp; don'ts · every message costs a tiny bit — learn to use it wisely · vibe coding intro</span></span>
-      </div>
-      <div class="tl-item">
-        <span class="tl-badge">60–120 min</span>
-        <span class="tl-label">Setup &amp; Getting Connected<span class="tl-sub">Install the agent · load it with AI credits · connect it to WhatsApp so kids can chat with it</span></span>
-      </div>
-      <div class="lunch">🍱 Lunch Break</div>
-      <div class="tl-block-title">🎮 Block 2 — 2 Hours</div>
-      <div class="tl-item">
-        <span class="tl-badge">0–80 min</span>
-        <span class="tl-label">Hands-On: Build a Chess Skill<span class="tl-sub">① What is a Skill · ② Kids take turns telling the AI what to build — it writes the code · ③ WhatsApp the agent and challenge it to chess · ④ Level up — make the AI play smarter</span></span>
-      </div>
-      <div class="tl-item">
-        <span class="tl-badge">80–100 min</span>
-        <span class="tl-label">Explore &amp; Experiment<span class="tl-sub">Try your own ideas · ask the agent to search the web in real time</span></span>
-      </div>
-      <div class="tl-item">
-        <span class="tl-badge">100–120 min</span>
-        <span class="tl-label">Q&amp;A + Wrap-up<span class="tl-sub">Questions, takeaways, what to do next</span></span>
-      </div>
-    </wired-card>
-  </div>
-
-  <div class="section">
-    <div class="section-title"><span class="icon">📚</span> What Your Child Will Learn</div>
-    <wired-card elevation="3">
-      <span class="learn-tag core">✅ Core — Everyone Covers These</span>
-      <ul class="learn-list">
-        <li><span class="dot core"></span>What an AI agent is vs a regular chatbot</li>
-        <li><span class="dot core"></span>How AI memory works — it remembers you over time</li>
-        <li><span class="dot core"></span>What AI can and cannot do — and why that matters</li>
-        <li><span class="dot core"></span>How to give clear instructions for better results</li>
-        <li><span class="dot core"></span>How <span class="tip-word" data-tip="AI credits = the 'fuel' that powers each message. Like a prepaid data plan — when it runs out, you top it up.">AI credits</span> work — and how to use them wisely</li>
-        <li><span class="dot core"></span><span class="tip-word" data-tip="Vibe coding = you describe what you want, AI builds it. No coding knowledge needed.">Vibe coding</span> — directing AI to build things in plain English</li>
-        <li><span class="dot core"></span>How to build a custom <span class="tip-word" data-tip="A Skill = a new ability for the agent. Today's skill: play chess via Lichess.">Skill</span> (chess via Lichess)</li>
-        <li><span class="dot core"></span>Safe and responsible AI use</li>
-      </ul>
-      <wired-divider></wired-divider>
-      <span class="learn-tag bonus">⭐ Bonus — If Time Allows</span>
-      <ul class="learn-list">
-        <li><span class="dot bonus"></span>Set up on their own device (Mac/PC)</li>
-        <li><span class="dot bonus"></span>Build a second custom skill of their choice</li>
-      </ul>
-    </wired-card>
-  </div>
-
-  <div class="section">
-    <div class="section-title"><span class="icon">⚡</span> AI Usage — What It Costs &amp; How to Manage It</div>
-    <wired-card elevation="3">
-      <p style="font-size:14px; color:#4a3728; margin-bottom:14px; line-height:1.7;">Every message to the agent uses a small amount of <span class="tip-word" data-tip="AI credits = the 'fuel' that powers each message. Like a prepaid data plan — when it runs out, you top it up.">AI credit</span>. Think of it like a prepaid data plan. Here's how we suggest starting:</p>
-      <div class="stage-grid">
-        <div class="stage active">
-          <div class="stage-label">✅ Stage 1 — Start Here</div>
-          <div class="stage-title">Prepaid AI Credits — $20</div>
-          <div class="stage-desc">Load $20 of credit. No monthly fee, no expiry. Top up when it runs out. Simple, transparent, and teaches kids to be thoughtful. $20 should last well beyond today.</div>
-        </div>
-        <div class="stage later">
-          <div class="stage-label">⏳ Stage 2 — When Ready</div>
-          <div class="stage-title">ChatGPT Plus $30/mo + Prepaid as Backup</div>
-          <div class="stage-desc">Once your child has good habits, switch to a flat monthly plan. Keep prepaid as backup for when the monthly limit runs out.</div>
-        </div>
-      </div>
-      <div class="alert">⚠️ <strong>Why not ChatGPT Plus from day one?</strong> It has an unpredictable weekly cap. When hit, the agent goes completely silent for the rest of the week — with no warning.</div>
-    </wired-card>
-  </div>
-
-  <div class="section">
-    <div class="section-title"><span class="icon">💰</span> Cost to Set Up at Home</div>
-    <wired-card elevation="3">
-      <p style="font-size:14px; color:#4a3728; margin-bottom:14px; line-height:1.7;">OpenClaw runs on any computer — an old PC or Mac works fine. Costs below assume a fresh Mac Mini.</p>
-      <div class="cost-row">
-        <div class="cost-name">Mac Mini<span>One-time · optional — any old PC/Mac works</span></div>
-        <span class="cost-price">SGD 849</span>
-      </div>
-      <div class="cost-row">
-        <div class="cost-name">eSIM Data Plan<span>Monthly · a separate number for your agent's own WhatsApp</span></div>
-        <span class="cost-price">SGD 4.90/mo</span>
-      </div>
-      <div class="cost-row">
-        <div class="cost-name">Web Search Add-on<span>Monthly · lets agent search the internet · shareable</span></div>
-        <span class="cost-price">USD 5/mo</span>
-      </div>
-      <div class="cost-row">
-        <div class="cost-name">AI Credits (Prepaid)<span>Start with $20 · top up as needed · never expires</span></div>
-        <span class="cost-price">USD 20</span>
-      </div>
-      <div class="cost-total">
-        <span>Monthly running cost</span>
-        <span class="cost-price">~SGD 12/mo</span>
-      </div>
-      <p style="font-size:12.5px; color:var(--muted); margin-top:10px; font-style:italic;">💡 OpenClaw itself is free &amp; open source. Costs above are for hardware and third-party services only.</p>
-    </wired-card>
-  </div>
-
-  <div class="section">
-    <div class="section-title"><span class="icon">✏️</span> Before You Arrive</div>
-    <div class="prep-box">
-      <div class="prep-title">One thing to prepare</div>
-      <div class="tip-grid">
-        <div class="tip"><span class="tip-icon">🤖</span><span><strong>Think of a name for your agent — and why that name.</strong> The "why" shapes its persona. Is it serious or playful? Formal or friendly? A strong character makes it feel truly yours.</span></div>
-        <div class="tip"><span class="tip-icon">💻</span><span><strong>Bringing an old laptop?</strong> Great — we can set it up on the spot. But make sure it has <strong>no sensitive personal data</strong>. Once OpenClaw is installed, the agent has access to everything on that machine.</span></div>
+      <div class="d-flex align-items-center gap-3">
+        <a href="tel:+6562577022"><i class="bi bi-telephone-fill"></i>+65 6257 7022</a>
+        <span class="top-divider">|</span>
+        <a href="https://wa.me/6580406409"><i class="bi bi-whatsapp"></i>+65 8040 6409</a>
       </div>
     </div>
   </div>
-
-  <div class="section">
-    <div class="section-title"><span class="icon">💡</span> Tips for Your Child</div>
-    <wired-card elevation="3">
-      <div class="tip-grid">
-        <div class="tip"><span class="tip-icon">🎯</span><span>Be specific — the clearer the instruction, the better the result</span></div>
-        <div class="tip"><span class="tip-icon">🔁</span><span>If it gets something wrong, just tell it what to fix</span></div>
-        <div class="tip"><span class="tip-icon">💸</span><span>Shorter, clearer messages use less credit — say more with fewer words</span></div>
-        <div class="tip"><span class="tip-icon">🔬</span><span>Experiment freely — you can't break it by asking questions</span></div>
-      </div>
-    </wired-card>
-  </div>
-
-  <div class="section">
-    <div class="section-title"><span class="icon">👨‍👩‍👧</span> For Parents — After the Session</div>
-    <wired-card elevation="3">
-      <div class="parent-block">
-        <div class="parent-block-title">Talk about it with your child</div>
-        <ul class="check-list">
-          <li><span class="chk">→</span>What was the coolest thing they made the agent do?</li>
-          <li><span class="chk">→</span>Can they explain "vibe coding" in their own words?</li>
-          <li><span class="chk">→</span>What Skill would they build next if they had their own setup?</li>
-        </ul>
-      </div>
-      <div class="divider"></div>
-      <div class="parent-block">
-        <div class="parent-block-title">Safety reminders</div>
-        <ul class="check-list">
-          <li><span class="chk">⚠</span>Always supervise setup — agent has access to files &amp; internet</li>
-          <li><span class="chk">⚠</span>Never share passwords or personal info with any AI</li>
-          <li><span class="chk">⚠</span>AI can make mistakes — double-check important answers</li>
-          <li><span class="chk">⚠</span>Monitor credit usage — set a monthly top-up budget</li>
-        </ul>
-      </div>
-      <div class="divider"></div>
-      <div class="parent-block">
-        <div class="parent-block-title">⚠️ Warning: Downloading <span class="tip-word" data-tip="Skills are add-ons that give the agent new abilities. Anyone can publish one — treat them like apps from unknown developers.">Skills</span></div>
-        <ul class="check-list">
-          <li><span class="chk">🚫</span>OpenClaw is open source — <strong>anyone</strong> can publish a Skill</li>
-          <li><span class="chk">🚫</span>A malicious skill could give a hacker full access to your machine</li>
-          <li><span class="chk">✓</span>If you want a skill online — ask your agent to build it instead. Same result, zero risk.</li>
-        </ul>
-        <div class="danger">🔴 Treat downloading Skills like installing an app from an unknown developer. When in doubt — don't install it.</div>
-      </div>
-      <div class="divider"></div>
-      <div class="parent-block" style="margin-bottom:0">
-        <div class="parent-block-title">Useful links</div>
-        <ul class="link-list">
-          <li>🌐 <a href="https://openclaw.ai">openclaw.ai</a> — official site</li>
-          <li>📖 <a href="https://docs.openclaw.ai">docs.openclaw.ai</a> — full documentation</li>
-          <li>💬 <a href="https://discord.gg/clawd">discord.gg/clawd</a> — community &amp; support</li>
-          <li>♟️ <a href="https://lichess.org">lichess.org</a> — free chess platform used in session</li>
-          <li>💳 <a href="https://openrouter.ai">openrouter.ai</a> — manage AI credits</li>
-        </ul>
-      </div>
-      <div class="alert" style="margin-top:14px;">💬 Questions after today? Reach out to <strong>Uncle BC</strong> on WhatsApp at <strong>98315644</strong></div>
-    </wired-card>
-  </div>
-
 </div>
 
-<div class="footer">
-  <strong>Your First AI Agent: Vibe Coding for Tweens</strong><br>
-  <a href="https://openclaw.ai">openclaw.ai</a> &nbsp;·&nbsp;
-  <a href="https://docs.openclaw.ai">docs.openclaw.ai</a> &nbsp;·&nbsp;
-  <a href="https://openrouter.ai">openrouter.ai</a><br>
-  <span style="color:rgba(255,255,255,0.3); font-size:11px;">v0.5 · Updated March 2026</span>
-</div>
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <div class="care-logo">
+        <div class="care-logo-mark">CARe</div>
+        <div class="care-logo-text">Centre for Advanced<br>Rehabilitation<small>Physiotherapy &bull; Occupational Therapy &bull; Hand Therapy</small></div>
+      </div>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navMenu">
+      <ul class="navbar-nav align-items-lg-center gap-0">
+        <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+        <li class="nav-item"><a class="nav-link" href="#team">Our Team</a></li>
+        <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        <li class="nav-item ms-lg-3">
+          <a href="#contact-form" class="btn-appointment">Book Appointment</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1400&q=80" alt="CARe Gym Facility">
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-7 hero-content">
+        <div class="hero-badge"><i class="bi bi-shield-check"></i> AHPC Registered Therapists</div>
+        <h1>Centre for<br>Advanced <span>Rehabilitation</span></h1>
+        <div class="hero-tagline">Comprehensive &bull; Advanced &bull; Responsive &bull; Excellence</div>
+        <p class="hero-desc">Empowering individuals through evidence-based physiotherapy, occupational therapy, and hand therapy in Singapore.</p>
+        <div class="hero-buttons">
+          <a href="#contact-form" class="btn-hero-primary">Book Appointment <i class="bi bi-arrow-right"></i></a>
+          <a href="#about" class="btn-hero-outline">Learn More <i class="bi bi-chevron-down"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-info-bar d-none d-lg-block">
+    <div class="container">
+      <div class="row g-0">
+        <div class="col-lg-3">
+          <div class="info-item">
+            <div class="info-icon"><i class="bi bi-clock"></i></div>
+            <div><h6>Opening Hours</h6><p>Mon - Fri: 9am - 6pm</p></div>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <div class="info-item">
+            <div class="info-icon"><i class="bi bi-geo-alt"></i></div>
+            <div><h6>Camden Clinic</h6><p>1 Orchard Blvd #11-05</p></div>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <div class="info-item">
+            <div class="info-icon"><i class="bi bi-geo-alt"></i></div>
+            <div><h6>Parkway Clinic</h6><p>1 Marine Parade Central #07-07</p></div>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <div class="info-item">
+            <div class="info-icon"><i class="bi bi-telephone"></i></div>
+            <div><h6>Call Us Today</h6><p>+65 6257 7022</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="section-padding" id="about">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6 fade-up">
+        <div class="about-img-wrapper">
+          <div class="about-experience">
+            <div class="num">AHPC</div>
+            <div class="txt">Registered</div>
+          </div>
+          <div class="about-img-main">
+            <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=900&q=80" alt="Physiotherapy Session">
+          </div>
+          <div class="about-img-float">
+            <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=700&q=80" alt="CARe Facility">
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 fade-up delay-1">
+        <div class="section-label">About Us</div>
+        <h2 class="section-title">We <span>CARe</span> About Your Recovery</h2>
+        <p class="section-desc">Our vision at CARe is to be Comprehensive, Advanced, Responsive, and Excellent in providing rehabilitation and support. We strive to offer rehabilitation services that address the physical, emotional, and cognitive needs of our patients.</p>
+        <p class="mt-3" style="font-size:15px;">By staying at the forefront of advancements in rehabilitation techniques and technology, we ensure that our interventions are effective and evidence-based. All our Physiotherapists and Occupational Therapists are registered with the Allied Health Professional Council (AHPC) in Singapore.</p>
+
+        <div class="about-features">
+          <div class="about-feature-item">
+            <div class="about-feature-icon"><i class="bi bi-clipboard2-pulse"></i></div>
+            <div><h6>Comprehensive</h6><p>Holistic care addressing physical, emotional &amp; cognitive needs</p></div>
+          </div>
+          <div class="about-feature-item">
+            <div class="about-feature-icon"><i class="bi bi-lightning-charge"></i></div>
+            <div><h6>Advanced</h6><p>Latest evidence-based rehabilitation techniques &amp; technology</p></div>
+          </div>
+          <div class="about-feature-item">
+            <div class="about-feature-icon"><i class="bi bi-people"></i></div>
+            <div><h6>Responsive</h6><p>Individualized treatment plans adapted to your progress</p></div>
+          </div>
+          <div class="about-feature-item">
+            <div class="about-feature-icon"><i class="bi bi-trophy"></i></div>
+            <div><h6>Excellence</h6><p>Commitment to optimal outcomes and quality of life</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COUNTERS -->
+<section class="counter-section">
+  <div class="container">
+    <div class="row g-4 text-center">
+      <div class="col-6 col-lg-3">
+        <div class="counter-item fade-up">
+          <div class="num">2</div>
+          <div class="label">Clinic Locations</div>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <div class="counter-item fade-up delay-1">
+          <div class="num">3</div>
+          <div class="label">Therapy Specialities</div>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <div class="counter-item fade-up delay-2">
+          <div class="num">100%</div>
+          <div class="label">AHPC Registered</div>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <div class="counter-item fade-up delay-3">
+          <div class="num">2025</div>
+          <div class="label">SME Award Winner</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="section-padding" id="services" style="background: var(--light-bg);">
+  <div class="container">
+    <div class="text-center mb-5">
+      <div class="section-label justify-content-center">Our Services</div>
+      <h2 class="section-title">Expert <span>Rehabilitation</span> Services</h2>
+      <p class="section-desc mx-auto">Tailored therapy services delivered by registered professionals to support your recovery journey.</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-lg-4 fade-up">
+        <div class="service-card">
+          <div class="service-card-img">
+            <img src="https://images.unsplash.com/photo-1559757175-5700dde675bc?w=800&q=80" alt="Hand Therapy">
+            <span class="tag">Specialist</span>
+          </div>
+          <div class="service-card-body">
+            <h5>Hand Therapy</h5>
+            <p>Specialized treatment for hand, wrist, and upper extremity conditions including post-surgical rehabilitation, fractures, and tendon injuries.</p>
+            <a href="#" class="service-link">Learn More <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 fade-up delay-1">
+        <div class="service-card">
+          <div class="service-card-img">
+            <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80" alt="Physiotherapy">
+            <span class="tag">Core</span>
+          </div>
+          <div class="service-card-body">
+            <h5>Physiotherapy</h5>
+            <p>Evidence-based physiotherapy for musculoskeletal pain, sports injuries, post-operative recovery, and neurological rehabilitation.</p>
+            <a href="#" class="service-link">Learn More <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 fade-up delay-2">
+        <div class="service-card">
+          <div class="service-card-img">
+            <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80" alt="Knee Rehabilitation">
+            <span class="tag">Specialist</span>
+          </div>
+          <div class="service-card-body">
+            <h5>Knee Rehabilitation</h5>
+            <p>Comprehensive knee rehabilitation programs for ACL reconstruction, total knee replacement, and chronic knee pain management.</p>
+            <a href="#" class="service-link">Learn More <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AWARD BANNER -->
+<section class="cta-banner">
+  <div class="container">
+    <div class="row align-items-center g-4">
+      <div class="col-lg-2 col-md-3 text-center fade-up">
+        <div class="cta-badge mx-auto">
+          <div class="icon">&#127942;</div>
+          <div class="year">2025</div>
+          <div class="name">SME Singapore<br>Award</div>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-9 fade-up delay-1">
+        <h3 class="text-white mb-3" style="font-size:28px;">Award-Winning Rehabilitation Centre</h3>
+        <p class="text-white" style="opacity:0.85; font-size:16px; line-height:1.8;">We are proud to announce that CARe has been awarded the prestigious SME Singapore Award 2025. This recognition highlights our commitment to business excellence and unwavering dedication to outstanding performance in rehabilitation.</p>
+      </div>
+      <div class="col-lg-4 text-center fade-up delay-2">
+        <div class="award-styled">
+          <div class="award-icon">&#127942;</div>
+          <div class="award-title">SME Singapore<br>Award 2025</div>
+          <div class="award-org">Business Excellence</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSURANCE PANELS -->
+<section class="section-padding" id="insurance">
+  <div class="container">
+    <div class="text-center mb-5">
+      <div class="section-label justify-content-center">Partners</div>
+      <h2 class="section-title">Insurance <span>Panels</span></h2>
+      <p class="section-desc mx-auto">We partner with top insurance providers to offer seamless therapy services. Contact us to discover the benefits available to you.</p>
+    </div>
+    <div class="row g-4 justify-content-center">
+      <div class="col-6 col-md-4 col-lg-3 fade-up">
+        <div class="insurance-logo">
+          <span class="ins-text-logo">Insurance Partner</span>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3 fade-up delay-1">
+        <div class="insurance-logo">
+          <span class="ins-text-logo">Insurance Partner</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section section-padding" id="faq">
+  <div class="container">
+    <div class="row g-5 align-items-start">
+      <div class="col-lg-5 fade-up">
+        <div class="section-label">FAQ</div>
+        <h2 class="section-title">Frequently Asked <span>Questions</span></h2>
+        <p class="section-desc">Find answers to common questions about our services, insurance coverage, and treatment approach.</p>
+        <div class="mt-4">
+          <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=700&q=80" alt="CARe Facility" style="border-radius:14px; box-shadow: 0 12px 40px rgba(0,0,0,0.08);">
+        </div>
+      </div>
+      <div class="col-lg-7 fade-up delay-1">
+        <div class="accordion" id="faqAccordion">
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="true">
+                What types of therapy does CARe offer?
+              </button>
+            </h2>
+            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">CARe provides physiotherapy, occupational therapy, and specialised hand therapy. Our services cover musculoskeletal rehabilitation, post-surgical recovery, sports injuries, knee rehabilitation, and more.</div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                Are your therapists registered with AHPC?
+              </button>
+            </h2>
+            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">Yes, all our physiotherapists and occupational therapists are registered with the Allied Health Professional Council (AHPC) in Singapore, ensuring you receive care from qualified professionals.</div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                Do you accept insurance claims?
+              </button>
+            </h2>
+            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">Yes, we are partnered with top insurance providers. Please contact our clinic directly to check if your insurance plan is covered and to understand the benefits available to you.</div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                Where are your clinics located?
+              </button>
+            </h2>
+            <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">We have two convenient locations: CARe @ Camden (Camden Medical Centre, 1 Orchard Boulevard #11-05) and CARe @ Parkway (Parkway Centre, 1 Marine Parade Central #07-07).</div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                Do I need a doctor's referral?
+              </button>
+            </h2>
+            <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">A doctor's referral is not always required. However, certain insurance plans may require one for claims. Please contact us to clarify your specific situation before booking.</div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
+                What are your operating hours?
+              </button>
+            </h2>
+            <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">We are open Monday to Friday from 9:00am to 6:00pm, and Saturday from 9:00am to 1:00pm. We are closed on Sundays and public holidays. Special arrangements beyond office hours are available upon request.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOURS & LOCATIONS -->
+<section class="section-padding" id="contact">
+  <div class="container">
+    <div class="text-center mb-5">
+      <div class="section-label justify-content-center">Visit Us</div>
+      <h2 class="section-title">Hours &amp; <span>Locations</span></h2>
+    </div>
+    <div class="row g-4">
+      <div class="col-lg-4 fade-up">
+        <div class="hours-card h-100">
+          <h4><i class="bi bi-clock me-2"></i>Office Hours</h4>
+          <div class="hours-row"><span style="font-weight:600;">Monday - Friday</span><span style="opacity:0.8;">9:00am - 6:00pm</span></div>
+          <div class="hours-row"><span style="font-weight:600;">Saturday</span><span style="opacity:0.8;">9:00am - 1:00pm</span></div>
+          <div class="hours-row"><span style="font-weight:600;">Sunday &amp; PH</span><span style="opacity:0.8;">Closed</span></div>
+          <div class="hours-note">Special arrangements available beyond office hours — contact us to enquire.</div>
+        </div>
+      </div>
+      <div class="col-lg-4 fade-up delay-1">
+        <div class="location-card">
+          <div class="location-icon"><i class="bi bi-building"></i></div>
+          <h5>CARe @ Camden</h5>
+          <p>1 Orchard Boulevard, Singapore 248649</p>
+          <p>Camden Medical Centre #11-05</p>
+          <a href="tel:+6562577022" class="phone-link"><i class="bi bi-telephone-fill"></i>+65 6257 7022</a>
+        </div>
+      </div>
+      <div class="col-lg-4 fade-up delay-2">
+        <div class="location-card">
+          <div class="location-icon"><i class="bi bi-building"></i></div>
+          <h5>CARe @ Parkway</h5>
+          <p>1 Marine Parade Central, Singapore 449408</p>
+          <p>Parkway Centre #07-07</p>
+          <a href="tel:+6564758334" class="phone-link"><i class="bi bi-telephone-fill"></i>+65 6475 8334</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT FORM -->
+<section class="contact-form section-padding" id="contact-form">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="form-card fade-up">
+          <div class="text-center mb-4">
+            <div class="section-label justify-content-center">Get In Touch</div>
+            <h2 class="section-title">Contact <span>Us</span></h2>
+            <p class="section-desc mx-auto">Have a question or ready to book? Fill in the form below and our team will get back to you shortly.</p>
+          </div>
+          <form>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="fname" placeholder="Name">
+                  <label for="fname">Your Name</label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <input type="email" class="form-control" id="femail" placeholder="Email">
+                  <label for="femail">Email Address</label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <input type="tel" class="form-control" id="fphone" placeholder="Phone">
+                  <label for="fphone">Phone Number</label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="fsubject" placeholder="Subject">
+                  <label for="fsubject">Subject</label>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-floating">
+                  <textarea class="form-control" id="fmessage" placeholder="Message" style="height:130px;"></textarea>
+                  <label for="fmessage">Your Message</label>
+                </div>
+              </div>
+              <div class="col-12 text-center mt-4">
+                <button type="submit" class="btn-submit">Send Message <i class="bi bi-send ms-2"></i></button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-4">
+        <div class="footer-brand">
+          <div class="care-logo">
+            <div class="care-logo-mark">CARe</div>
+            <div class="care-logo-text">Centre for Advanced<br>Rehabilitation<small>Physiotherapy &bull; OT &bull; Hand Therapy</small></div>
+          </div>
+        </div>
+        <p class="footer-desc">Comprehensive, Advanced, Responsive, and Excellent rehabilitation services in Singapore. All therapists registered with AHPC.</p>
+      </div>
+      <div class="col-lg-2 col-md-4">
+        <h5>Quick Links</h5>
+        <ul class="footer-links">
+          <li><a href="#"><i class="bi bi-chevron-right"></i>Home</a></li>
+          <li><a href="#about"><i class="bi bi-chevron-right"></i>About</a></li>
+          <li><a href="#services"><i class="bi bi-chevron-right"></i>Services</a></li>
+          <li><a href="#faq"><i class="bi bi-chevron-right"></i>FAQ</a></li>
+          <li><a href="#contact"><i class="bi bi-chevron-right"></i>Contact</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-2 col-md-4">
+        <h5>Services</h5>
+        <ul class="footer-links">
+          <li><a href="#"><i class="bi bi-chevron-right"></i>Hand Therapy</a></li>
+          <li><a href="#"><i class="bi bi-chevron-right"></i>Physiotherapy</a></li>
+          <li><a href="#"><i class="bi bi-chevron-right"></i>Knee Rehab</a></li>
+          <li><a href="#"><i class="bi bi-chevron-right"></i>Patient Education</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-4 col-md-4">
+        <h5>Contact Info</h5>
+        <div class="footer-contact-item">
+          <div class="footer-contact-icon"><i class="bi bi-geo-alt-fill"></i></div>
+          <div><p>Camden Medical Centre #11-05,<br>1 Orchard Boulevard, S(248649)</p></div>
+        </div>
+        <div class="footer-contact-item">
+          <div class="footer-contact-icon"><i class="bi bi-geo-alt-fill"></i></div>
+          <div><p>Parkway Centre #07-07,<br>1 Marine Parade Central, S(449408)</p></div>
+        </div>
+        <div class="footer-contact-item">
+          <div class="footer-contact-icon"><i class="bi bi-envelope-fill"></i></div>
+          <div><p><a href="/cdn-cgi/l/email-protection#37444247475845437754525943455251584556534145525f56551954585a"><span class="__cf_email__" data-cfemail="a6d5d3d6d6c9d4d2e6c5c3c8d2d4c3c0c9d4c7c2d0d4c3cec7c488c5c9cb">[email&#160;protected]</span></a></p></div>
+        </div>
+        <div class="footer-contact-item">
+          <div class="footer-contact-icon"><i class="bi bi-whatsapp"></i></div>
+          <div><p><a href="https://wa.me/6580406409">+65 8040 6409</a></p></div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom text-center">
+      &copy; 2025 Centre for Advanced Rehabilitation - CARe. All rights reserved.
+    </div>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.tip-word').forEach(el => {
-      el.addEventListener('click', e => {
-        e.stopPropagation();
-        const isActive = el.classList.contains('active');
-        document.querySelectorAll('.tip-word.active').forEach(e => e.classList.remove('active'));
-        if (!isActive) el.classList.add('active');
-      });
-    });
-    document.addEventListener('click', () => {
-      document.querySelectorAll('.tip-word.active').forEach(e => e.classList.remove('active'));
-    });
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
   });
-</script>
-</body>
-</html>
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+// Navbar active on scroll
+const sections = document.querySelectorAll('section[id]');
+window.addEventListener('scroll', () => {
+  const scrollY = window.pageYOffset;
+  sections.forEach(s => {
+    con
